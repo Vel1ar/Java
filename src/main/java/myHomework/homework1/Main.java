@@ -1,6 +1,4 @@
-package org.example;
-
-import myHomework.homework1.Homework1;
+package myHomework.homework1;
 
 public class Main {
     public static void main(String[] args) {
