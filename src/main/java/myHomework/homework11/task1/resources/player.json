@@ -1,0 +1,17 @@
+{
+  "str": "Hedaslk",
+  "players": [
+    {
+      "id": 1,
+      "nick": "Vlados",
+      "points": 0,
+      "online": false
+    },
+    {
+      "id": 3,
+      "nick": "Andrey",
+      "points": 434,
+      "online": false
+    }
+  ]
+}
