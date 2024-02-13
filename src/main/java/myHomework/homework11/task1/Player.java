@@ -15,7 +15,7 @@ public class Player {
         this.isOnline = isOnline;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
