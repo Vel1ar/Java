@@ -1,1 +1,14 @@
-[{"id":0,"nick":"Andrey","points":0,"online":false},{"id":1,"nick":"Vlados","points":0,"online":false},{"id":2,"nick":"Kostya","points":0,"online":false}]
+[
+  {
+    "id": 1,
+    "nick": "Andrey",
+    "points": 300,
+    "online": false
+  },
+  {
+    "id": 3,
+    "nick": "Yarik",
+    "points": 0,
+    "online": false
+  }
+]

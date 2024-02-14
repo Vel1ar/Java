@@ -4,51 +4,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Collection;
 
 public class Main {
     public static void main(String[] args) {
-        Path filePath1 = Path.of("src/main/java/myHomework/homework11/task1/resources/player1.json");
-        Path filePath2 = Path.of("src/main/java/myHomework/homework11/task1/resources/player2.json");
-        Path filePath3 = Path.of("src/main/java/myHomework/homework11/task1/resources/player3.json");
-        Path filePath4 = Path.of("src/main/java/myHomework/homework11/task1/resources/player4.json");
-        Path filePath5 = Path.of("src/main/java/myHomework/homework11/task1/resources/player5.json");
+        final String path = "src/main/java/myHomework/homework11/task1/resources/";
+        Path filePath1 = Path.of(path + "player1.json");
+        Path filePath2 = Path.of(path + "player2.json");
+        Path filePath3 = Path.of(path + "player3.json");
 
-        PlayerService playerServiceJSON = new PlayerServiceJSON();
+        PlayerService service = new PlayerServiceJSON();
 
         ObjectMapper mapper = new ObjectMapper();
 
-        //Функционал добавления игрока
+        int playerId1 = service.createPlayer("Andrey");
+        int playerId2 = service.createPlayer("Vlados");
+        int playerId3 = service.createPlayer("Yarik");
+
+        //Функционал удаления
         try {
-            mapper.writeValue(filePath1.toFile(),playerServiceJSON.createPlayer("Andrey"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        //Добавляем для кейса
-        playerServiceJSON.createPlayer("Vlados");
-        playerServiceJSON.createPlayer("Kostya");
-        //Функционал вывести одного игрока
-        try {
-            mapper.writeValue(filePath2.toFile(), playerServiceJSON.getPlayerById(1));
+            mapper.writeValue(filePath1.toFile(), service.addPoints(playerId1,200));
+            mapper.writeValue(filePath1.toFile(), service.deletePlayer(playerId2));
+            mapper.writeValue(filePath2.toFile(), service.getPlayerById(playerId3));
+            mapper.writeValue(filePath3.toFile(), service.getPlayers());
         } catch (IOException e) {
             System.out.println("Что то не так с индексами");
         }
-        //Функционал вывести всех игроков
-        try {
-            mapper.writeValue(filePath3.toFile(),playerServiceJSON.getPlayers());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        //Функционал удаления, записывает удаленного игрока
-        try {
-            mapper.writeValue(filePath4.toFile(),playerServiceJSON.deletePlayer(1));
-        } catch (IOException e) {
-            System.out.println("Что то не так с индексами");
-        }
-        //Функционал добавления очков игроку
-        try {
-            mapper.writeValue(filePath5.toFile(),playerServiceJSON.addPoints(1,200));
-        } catch (IOException e) {
-            System.out.println("Что то не так с индексами");
-        }
+
     }
 }

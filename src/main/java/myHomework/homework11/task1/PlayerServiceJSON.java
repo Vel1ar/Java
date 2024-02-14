@@ -1,14 +1,11 @@
 package myHomework.homework11.task1;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
-public class PlayerServiceJSON implements PlayerService{
+public class PlayerServiceJSON implements PlayerService {
 
-    private Integer nextId = 0;
-    List<Player> players = new ArrayList<>();
-
+    private Integer nextId = 1;
+    HashMap<Integer, Player> players = new HashMap<>();
     @Override
     public Player getPlayerById(int id) {
         return players.get(id);
@@ -16,13 +13,13 @@ public class PlayerServiceJSON implements PlayerService{
 
     @Override
     public Collection<Player> getPlayers() {
-        return players;
+        return players.values();
     }
 
     @Override
     public int createPlayer(String nickname) {
-        Player player = new Player(nextId,nickname,0,false);
-        players.add(player);
+        Player player = new Player(nextId, nickname, 0, false);
+        players.put(nextId, player);
         this.nextId++;
         return player.getId();
     }
@@ -37,8 +34,7 @@ public class PlayerServiceJSON implements PlayerService{
     @Override
     public int addPoints(int playerId, int points) {
         Player player = players.get(playerId);
-        player.setPoints(points);
+        player.setPoints(player.getPoints()+points);
         return player.getPoints();
     }
-
 }
