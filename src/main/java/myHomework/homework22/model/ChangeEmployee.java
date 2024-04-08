@@ -1,4 +1,4 @@
 package myHomework.homework22.model;
 
-public record ChangeEmployee(String lastName, String email, String url, String phone, Boolean isActive) {
+public record ChangeEmployee(String email, String url, Boolean isActive) {
 }

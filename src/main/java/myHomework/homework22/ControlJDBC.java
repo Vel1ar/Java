@@ -33,7 +33,7 @@ public class ControlJDBC {
     }
 
     public int createEmployee(String firstName, String lastName, String middleName,
-                              String mail, String phone, String birthdate, Integer companyId) throws SQLException {
+                              String email, String phone, String birthdate, Integer companyId) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(sqlInsertEmployee, Statement.RETURN_GENERATED_KEYS);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -47,7 +47,7 @@ public class ControlJDBC {
         statement.setString(1, firstName);
         statement.setString(2, lastName);
         statement.setString(3, middleName);
-        statement.setString(4, mail);
+        statement.setString(4, email);
         statement.setString(5, phone);
         statement.setDate(6, new java.sql.Date(date.getTime()));
         statement.setInt(7, companyId);

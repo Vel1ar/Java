@@ -1,18 +1,21 @@
 package myHomework.homework11.task1;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.*;
 
 public class PlayerServiceJSON implements PlayerService {
 
     private Integer nextId = 1;
     HashMap<Integer, Player> players = new HashMap<>();
+    ObjectMapper mapper = new ObjectMapper();
     @Override
     public Player getPlayerById(int id) {
         return players.get(id);
     }
 
     @Override
-    public Collection<Player> getPlayers() {
+    public Collection<Player> getPlayers(){
         return players.values();
     }
 

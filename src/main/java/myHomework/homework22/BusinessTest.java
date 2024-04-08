@@ -61,7 +61,6 @@ public class BusinessTest {
                 InputValue._MIDDLENAME.getValue(), InputValue._EMAIL.getValue(), InputValue._URL.getValue(),
                 InputValue._PHONE.getValue(), InputValue._BIRTHDATE.getValue(), true, compID, token_admin);
 
-
         Employee employee = null;
         try {
             employee = controlJDBC.selectEmployeeInfo(empID);
@@ -141,7 +140,7 @@ public class BusinessTest {
 
         try {
             compID = controlJDBC.createCompany("Company for Employee");
-            empID = controlJDBC.createEmployee(InputValue._FIRSTNAME.getValue(),InputValue._LASTNAME.getValue(),
+            empID = controlJDBC.createEmployee(InputValue._FIRSTNAME.getValue(), InputValue._LASTNAME.getValue(),
                     InputValue._MIDDLENAME.getValue(), InputValue._EMAIL.getValue(),
                     InputValue._PHONE.getValue(), InputValue._BIRTHDATE.getValue(), compID);
         } catch (SQLException e) {
@@ -165,11 +164,11 @@ public class BusinessTest {
 
         try {
             compID = controlJDBC.createCompany("Company for Duo");
-            empID = controlJDBC.createEmployee(InputValue._FIRSTNAME.getValue(),InputValue._LASTNAME.getValue(),
+            empID = controlJDBC.createEmployee(InputValue._FIRSTNAME.getValue(), InputValue._LASTNAME.getValue(),
                     InputValue._MIDDLENAME.getValue(), InputValue._EMAIL.getValue(),
                     InputValue._PHONE.getValue(), InputValue._BIRTHDATE.getValue(), compID);
             listOfEmployee.add(empID);
-            empID = controlJDBC.createEmployee(InputValue._FIRSTNAME.getValue(),InputValue._LASTNAME.getValue(),
+            empID = controlJDBC.createEmployee(InputValue._FIRSTNAME.getValue(), InputValue._LASTNAME.getValue(),
                     InputValue._MIDDLENAME.getValue(), InputValue._EMAIL.getValue(),
                     InputValue._PHONE.getValue(), InputValue._BIRTHDATE.getValue(), compID);
             listOfEmployee.add(empID);
@@ -184,6 +183,9 @@ public class BusinessTest {
     }
 
     @Test
+    @Tag("all")
+    @Tag("patch")
+    @DisplayName("Изменение email, isActive")
     public void changeEmployeeById() {
         String token = client.getToken("musa", "music-fairy");
         try {
@@ -194,10 +196,11 @@ public class BusinessTest {
             throw new RuntimeException(e);
         }
         Employee employee = client.changeEmployeeInfoId(empID, InputValue._LASTNAME.getValue(),
-                InputValue._EMAIL.getValue(),InputValue._URL.getValue(),
-                InputValue._PHONE.getValue(), true, token);
+                InputValue._EMAIL.getValue(), InputValue._URL.getValue(),
+                InputValue._PHONE.getValue(), false, token);
 
-        assertEquals(employee.lastName(), InputValue._LASTNAME.getValue());
-        assertEquals(employee.mail(),InputValue._EMAIL.getValue());
+        assertFalse(employee.isActive());
+        assertEquals(employee.url(), InputValue._URL.getValue());
+        assertEquals(employee.email(), InputValue._EMAIL.getValue());
     }
 }

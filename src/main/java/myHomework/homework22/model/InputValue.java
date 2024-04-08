@@ -1,8 +1,8 @@
 package myHomework.homework22.model;
 
 public enum InputValue {
-    _FIRSTNAME ("Alex"),
-    _LASTNAME ("Old"),
+    _FIRSTNAME("Alex"),
+    _LASTNAME("Old"),
     _MIDDLENAME("Killa"),
     _EMAIL("a13213@mail.ru"),
     _URL("imgp.fp"),
@@ -10,11 +10,11 @@ public enum InputValue {
     _BIRTHDATE("2000-01-02"),
     _BLANK("");
 
-        private String value;
+    private String value;
 
-        InputValue(String value){
-            this.value = value;
-        }
+    InputValue(String value) {
+        this.value = value;
+    }
 
     public String getValue() {
         return value;

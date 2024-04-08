@@ -27,10 +27,10 @@ public class XClientService {
                 .extract().path("userToken");
     }
 
-    public Integer createEmployee(String firstName, String lastName, String middleName, String mail,
+    public Integer createEmployee(String firstName, String lastName, String middleName, String email,
                                   String url, String phone, String birthdate, Boolean isActive, Integer companyId, String token) {
 
-        Employee employee = new Employee(firstName, lastName, middleName, mail, url, phone, birthdate,
+        Employee employee = new Employee(firstName, lastName, middleName, email, url, phone, birthdate,
                 isActive, companyId);
 
         return given()
@@ -67,15 +67,15 @@ public class XClientService {
 
     public Employee changeEmployeeInfoId(Integer id, String lastName, String email, String url, String phone,
                                            Boolean isActive, String token) {
-        ChangeEmployee changeEmployee = new ChangeEmployee(lastName, email, url, phone, isActive);
-        return given()
+        ChangeEmployee changeEmployee = new ChangeEmployee(email, url, isActive);
+        return given().log().all()
                 .contentType(ContentType.JSON)
                 .header("x-client-token", token)
                 .baseUri(URL)
                 .basePath("/employee/" + id)
                 .body(changeEmployee)
                 .patch()
-                .then()
-                .extract().body().as(Employee.class);
+                .then().log().all()
+                .extract().as(Employee.class);
     }
 }
