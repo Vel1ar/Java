@@ -66,6 +66,7 @@ public class ControlJDBC {
                 resultSet.getString("first_name"),
                 resultSet.getString("last_name"),
                 resultSet.getString("middle_name"),
+                resultSet.getString("email"),
                 resultSet.getString("avatar_url"),
                 resultSet.getString("phone"),
                 resultSet.getString("birthdate"),

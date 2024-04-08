@@ -116,8 +116,8 @@ public class ReqresApiTests {
                 .body(userUpdate)
                 .put(URL + "api/users/2")
                 .then().log().all()
-                .extract().jsonPath().getString("updatedAt").substring(0, 16);
+                .extract().jsonPath().getString("updatedAt");
         String substLocalDateTime = localDateTime.minusHours(3).toString().substring(0, 16);
-        assertEquals(date, substLocalDateTime);
+        assertEquals(date.substring(0, 16), substLocalDateTime);
     }
 }

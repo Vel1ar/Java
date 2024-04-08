@@ -1,6 +1,8 @@
 package myHomework.homework22;
 
 import myHomework.homework22.model.Employee;
+import myHomework.homework22.model.InputValue;
+import myHomework.homework22.model.Token;
 import org.junit.jupiter.api.*;
 
 import java.sql.SQLException;
@@ -55,8 +57,10 @@ public class BusinessTest {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        empID = client.createEmployee("Andrey", "Ovs", "AI", compID,
-                "", "7823918123", "2000-10-02", true, token_admin);
+        empID = client.createEmployee(InputValue._FIRSTNAME.getValue(), InputValue._LASTNAME.getValue(),
+                InputValue._MIDDLENAME.getValue(), InputValue._EMAIL.getValue(), InputValue._URL.getValue(),
+                InputValue._PHONE.getValue(), InputValue._BIRTHDATE.getValue(), true, compID, token_admin);
+
 
         Employee employee = null;
         try {
@@ -65,9 +69,9 @@ public class BusinessTest {
             throw new RuntimeException(e);
         }
 
-        assertEquals(employee.firstName(), "Andrey");
-        assertEquals(employee.lastName(), "Ovs");
-        assertEquals(employee.middleName(), "AI");
+        assertEquals(employee.firstName(), InputValue._FIRSTNAME.getValue());
+        assertEquals(employee.lastName(), InputValue._LASTNAME.getValue());
+        assertEquals(employee.middleName(), InputValue._MIDDLENAME.getValue());
     }
 
     @Test
@@ -83,8 +87,9 @@ public class BusinessTest {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        empID = client.createEmployee("Misha", "Tech", "", compID,
-                "", "7823918123", "2000-10-02", true, token_admin);
+        empID = client.createEmployee(InputValue._FIRSTNAME.getValue(), InputValue._LASTNAME.getValue(),
+                InputValue._BLANK.getValue(), InputValue._EMAIL.getValue(), InputValue._URL.getValue(),
+                InputValue._PHONE.getValue(), InputValue._BIRTHDATE.getValue(), true, compID, token_admin);
 
         Employee employee = null;
         try {
@@ -93,8 +98,8 @@ public class BusinessTest {
             throw new RuntimeException(e);
         }
 
-        assertEquals(employee.firstName(), "Misha");
-        assertEquals(employee.lastName(), "Tech");
+        assertEquals(employee.firstName(), InputValue._FIRSTNAME.getValue());
+        assertEquals(employee.lastName(), InputValue._LASTNAME.getValue());
         assertEquals(employee.middleName(), "");
     }
 
@@ -111,8 +116,9 @@ public class BusinessTest {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        empID = client.createEmployee("Misha", "Tech", "", compID,
-                "", "7823918123", "2000-10-02", true, token_user);
+        empID = client.createEmployee(InputValue._FIRSTNAME.getValue(), InputValue._LASTNAME.getValue(),
+                InputValue._MIDDLENAME.getValue(), InputValue._EMAIL.getValue(), InputValue._URL.getValue(),
+                InputValue._PHONE.getValue(), InputValue._BIRTHDATE.getValue(), true, compID, token_user);
 
         Employee employee = null;
         try {
@@ -121,9 +127,9 @@ public class BusinessTest {
             throw new RuntimeException(e);
         }
 
-        assertEquals(employee.firstName(), "Misha");
-        assertEquals(employee.lastName(), "Tech");
-        assertEquals(employee.middleName(), "");
+        assertEquals(employee.firstName(), InputValue._FIRSTNAME.getValue());
+        assertEquals(employee.lastName(), InputValue._LASTNAME.getValue());
+        assertEquals(employee.middleName(), InputValue._MIDDLENAME.getValue());
     }
 
     @Test
@@ -135,16 +141,17 @@ public class BusinessTest {
 
         try {
             compID = controlJDBC.createCompany("Company for Employee");
-            empID = controlJDBC.createEmployee("Egor", "Proshutin", "", "mail@mail.ru",
-                    "89878787", "2000-02-02", compID);
+            empID = controlJDBC.createEmployee(InputValue._FIRSTNAME.getValue(),InputValue._LASTNAME.getValue(),
+                    InputValue._MIDDLENAME.getValue(), InputValue._EMAIL.getValue(),
+                    InputValue._PHONE.getValue(), InputValue._BIRTHDATE.getValue(), compID);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
         Employee employee = client.getInfoEmployee(empID);
 
-        assertEquals(employee.firstName(), "Egor");
-        assertEquals(employee.lastName(), "Proshutin");
+        assertEquals(employee.firstName(), InputValue._FIRSTNAME.getValue());
+        assertEquals(employee.lastName(), InputValue._LASTNAME.getValue());
         assertEquals(employee.companyId(), compID);
         assertNull(employee.url());
     }
@@ -158,11 +165,13 @@ public class BusinessTest {
 
         try {
             compID = controlJDBC.createCompany("Company for Duo");
-            empID = controlJDBC.createEmployee("Igor", "Prosto", "", "mail@mail.ru",
-                    "8987873287", "2000-02-02", compID);
+            empID = controlJDBC.createEmployee(InputValue._FIRSTNAME.getValue(),InputValue._LASTNAME.getValue(),
+                    InputValue._MIDDLENAME.getValue(), InputValue._EMAIL.getValue(),
+                    InputValue._PHONE.getValue(), InputValue._BIRTHDATE.getValue(), compID);
             listOfEmployee.add(empID);
-            empID = controlJDBC.createEmployee("Igor", "Prosto", "", "mail@mail.ru",
-                    "8987228787", "2000-02-02", compID);
+            empID = controlJDBC.createEmployee(InputValue._FIRSTNAME.getValue(),InputValue._LASTNAME.getValue(),
+                    InputValue._MIDDLENAME.getValue(), InputValue._EMAIL.getValue(),
+                    InputValue._PHONE.getValue(), InputValue._BIRTHDATE.getValue(), compID);
             listOfEmployee.add(empID);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -170,7 +179,25 @@ public class BusinessTest {
 
         List<Employee> list = client.getEmployeeListForCompany(compID);
         assertEquals(2, list.size());
-        list.forEach(x -> assertEquals(x.firstName(), "Igor"));
-        list.forEach(x -> assertEquals(x.lastName(), "Prosto"));
+        list.forEach(x -> assertEquals(x.firstName(), InputValue._FIRSTNAME.getValue()));
+        list.forEach(x -> assertEquals(x.lastName(), InputValue._LASTNAME.getValue()));
+    }
+
+    @Test
+    public void changeEmployeeById() {
+        String token = client.getToken("musa", "music-fairy");
+        try {
+            compID = controlJDBC.createCompany("Company for change Employee ifo");
+            empID = controlJDBC.createEmployee("Alex", "Old", "", "a184829@mail.ru",
+                    "877747742", "2000-03-03", compID);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        Employee employee = client.changeEmployeeInfoId(empID, InputValue._LASTNAME.getValue(),
+                InputValue._EMAIL.getValue(),InputValue._URL.getValue(),
+                InputValue._PHONE.getValue(), true, token);
+
+        assertEquals(employee.lastName(), InputValue._LASTNAME.getValue());
+        assertEquals(employee.mail(),InputValue._EMAIL.getValue());
     }
 }
