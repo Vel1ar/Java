@@ -1,9 +1,10 @@
-package myHomework.homework22;
+package certificationNumber2;
 
 import io.restassured.http.ContentType;
-import myHomework.homework22.model.ChangeEmployee;
-import myHomework.homework22.model.Employee;
-import myHomework.homework22.model.Token;
+import certificationNumber2.model.ChangeEmployee;
+import certificationNumber2.model.Employee;
+import certificationNumber2.model.Token;
+import io.restassured.parsing.Parser;
 
 import java.util.*;
 
@@ -32,7 +33,6 @@ public class XClientService {
 
         Employee employee = new Employee(firstName, lastName, middleName, email, url, phone, birthdate,
                 isActive, companyId);
-
         return given()
                 .header("x-client-token", token)
                 .body(employee)
@@ -43,6 +43,24 @@ public class XClientService {
                 .then()
                 .extract().jsonPath().getInt("id");
     }
+
+    public List<String> createInvalidEmployee(String firstName, String lastName, String middleName, String email,
+                                              String url, String phone, String birthdate, Boolean isActive, Integer companyId, String token) {
+
+        Employee employee = new Employee(firstName, lastName, middleName, email, url, phone, birthdate,
+                isActive, companyId);
+        int i = 0;
+        return given()
+                .header("x-client-token", token)
+                .body(employee)
+                .contentType(ContentType.JSON)
+                .baseUri(URL)
+                .basePath("/employee")
+                .post()
+                .then()
+                .extract().body().jsonPath().getList("message");
+    }
+
 
     public Employee getInfoEmployee(Integer id) {
         return given()
@@ -65,17 +83,17 @@ public class XClientService {
                 .extract().body().jsonPath().getList("$", Employee.class);
     }
 
-    public Employee changeEmployeeInfoId(Integer id, String lastName, String email, String url, String phone,
-                                           Boolean isActive, String token) {
+    public Employee changeEmployeeInfoId(Integer id, String email, String url, String phone,
+                                         Boolean isActive, String token) {
         ChangeEmployee changeEmployee = new ChangeEmployee(email, url, isActive);
-        return given().log().all()
+        return given()
                 .contentType(ContentType.JSON)
                 .header("x-client-token", token)
                 .baseUri(URL)
                 .basePath("/employee/" + id)
                 .body(changeEmployee)
                 .patch()
-                .then().log().all()
+                .then()
                 .extract().as(Employee.class);
     }
 }

@@ -1,4 +1,4 @@
-package myHomework.homework22.model;
+package certificationNumber2.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
